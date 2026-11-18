@@ -5,6 +5,6 @@ st.title("AI Interview Assistant")
 st.caption("Practice and Prepare for your Placement here")
 try:
   client = Gorq(api_key = st.secrets"GORQ_API")
-except (Keyerror, FileNotFound):
+except (Keyerror, FileNotFoundError):
   st.error("API Key is missing. Add it in Advanced setting")
   st.stop()
