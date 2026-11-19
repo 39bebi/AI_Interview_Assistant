@@ -26,7 +26,6 @@ if st.button("Generate AI Response", type = "primary"):
   if mode in ['Evaluate Answers', 'Improve Answers'] and (not question.strip() or not answer.strip()):
     st.warning("Please enter a valid Question and Answer")
     st.stop()
-  topics="Topics is " + topic + "Difficult is " +level +"."
   if mode =="Generate Questions" :
     task = "Generate" + str(count) + " Frequently asked Interview Questions 3 theory and 2 senario questions . do not give answer . give hint"
   elif mode =="Generate Code Questions":
