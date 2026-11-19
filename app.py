@@ -23,6 +23,35 @@ else:
   questions = st.text_area('Enter Interview Questions here')
   answer = st.text_area('Enter your answer', height =160)
 if st.button("Generate AI Response", type = "primary"):
-  if mode ==(['Evaluate Answers', 'Improve Answers'] and (not question.strip()) or (not answer.strip())
-             st.warning("Please enter a valid Question and Answer")
-             st.strip()
+  if mode in ['Evaluate Answers', 'Improve Answers'] and (not question.strip()) or (not answer.strip()):
+    st.warning("Please enter a valid Question and Answer")
+    st.stop()
+  topics="Topics is " +topic + "Difficult is " +level
+  if mode =="Generate Questions" :
+    task = "Generate" + str(count) + " Frequently asked Interview Questions 3 theory and 2 senario questions . do not give answer . give hint"
+  elif mode =="Generate Code Questions":
+    task = "Generate" + str(count) + " Frequently asked coding questions on topic" + topic + "and give hints to solve them. Be accurate."
+  elif mode == "Evaluate Answers":
+    tsak = "Question :" +question+"My Answer: " +answer +"Evaluate this answer based on concept,relavance,communication,lenght of answer. Give each rating out of Five in a list."
+  elif mode == "Improve Answers":
+    task= "Question:" +question + "My answer :" + answer +" Improve the answer based on choice of words."
+  background = "Job role :" + role + "Difficulty level" +  level
+  with st.spinner(" Generating your answer..."):
+    try:
+      response= client.chat.completions.create(
+        model =gen_model,
+        messages = [{"role" :"system",
+                     "content": "Act as a Senior Interviewer both HR and Technical expert"},
+                    {"role": "user",
+                    "content": background +task}],
+        temperature = 0.7,
+        max_tokens = 1800
+      )
+      output = response.choices[0].message.content
+      st. subheader("AI Response")
+      st.markdown(output)
+      st.download_button("Download Response", output,file_name =" Interview_Response.txt", mime='text/plain')
+    except Exception as e:
+      st.error("API connection was unsuccessful")
+      st.info ("Please check your API Key and rate limits")
+st.caption("Powered by Steamlit.io and GitHub. Using LLM API")
